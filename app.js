@@ -1,8 +1,8 @@
 const Discord = require('discord.js')
 const bot = new Discord.Client()
-const Warn = require('./commands/administration')
-const Clear = require('./commands/administration')
-const Helper = require('./commands/helper')
+const Warn = require('./app/commands/administration')
+const Clear = require('./app/commands/administration')
+const Helper = require('./app/commands/helper')
 
 bot.login('Njk5NjQzNjg0MTAyMzQwNjM4.XpXc7w.3qiPIr4qDpJjORdv65C5RnTh4QI');
 
@@ -24,16 +24,6 @@ bot.on('guildMemberAdd', function (member) {
 
 /* Reply message */
 bot.on('message', function (message, member) {
-    if (message.content === "hello Captain Bot") {
-        message.reply('Hello, comment tu vas ?')
-    }
-    if (Helper.match(message)) {
-        return Helper.action(message, bot, Discord)
-    }
-    if (Warn.match(message)) {
-        return Warn.action(message)
-    }
-    if (Clear.match(message)) {
-        return Clear.action(message)
-    }
+    let commandUsed = Helper.parse(message, bot, Discord) || Warn.parse(message)
+    || Clear.parse(message)
 })
